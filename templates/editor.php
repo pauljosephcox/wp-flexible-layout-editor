@@ -12,7 +12,7 @@
 	<div class="panel">
 
 		<h6>Text Edit</h6>
-		<textarea ref="editorTextInput" v-model="currentEditValue">{{currentEditValue}}</textarea>
+		<textarea ref="editorTextInput" v-on:keyup="editorTextKeyUp" v-model="currentEditValue">{{currentEditValue}}</textarea>
 
 	</div>
 

@@ -4,7 +4,7 @@
 new Vue({
 	el: "#editor",
 	mounted: function(){
-		// alert("mounted");
+		
 	},
 	data() {
 		return {
@@ -12,6 +12,7 @@ new Vue({
 			title: "My Editor Title",
 			currentEditValue: null,
 			currentTarget: null,
+			acf: {},
 			edit: {
 
 				buttonTitle: 'Edit',
@@ -25,6 +26,13 @@ new Vue({
 			this.enableEditing();
 			this.currentEditValue = event.target.innerText
 			this.currentTarget = event.target;
+
+		},
+
+		editorTextKeyUp: function(e){
+
+			this.currentTarget.innerText = this.currentEditValue;
+
 		},
 
 		// Toggle Edit More
@@ -40,10 +48,11 @@ new Vue({
 		// Enabled Editing
 		enableEditing: function(){
 
-			this.edit.buttonTitle = 'Save';
+			this.edit.buttonTitle = 'Preview';
 			this.state = 'editor';
 			this.$refs.editorTextInput.focus();
-			jQuery('[data-editable]').attr('contenteditable',true);
+
+			// jQuery('[data-editable]').attr('contenteditable',true);
 
 		},
 
@@ -53,12 +62,14 @@ new Vue({
 			this.edit.buttonTitle = 'Edit';
 			this.state = 'normal';
 			this.save();
-			jQuery('[data-editable]').attr('contenteditable',false);
+			// jQuery('[data-editable]').attr('contenteditable',false);
 
 		},
 
 		save: function(){
-
+			// console.log("SAVE");
+			// console.log(this.acf);
+			// console.log(this.currentTarget.getAttribute('data-editable'));
 			this.currentTarget.innerText = this.currentEditValue;
 
 		}
@@ -66,6 +77,7 @@ new Vue({
 
 
 	}
+
 });
 
 
