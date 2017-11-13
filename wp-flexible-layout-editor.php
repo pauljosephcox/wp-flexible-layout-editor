@@ -37,8 +37,8 @@ class WP_Flexible_Layout_Editor {
 		$this->notice = false;
 
 		// Actions
-		// add_action('admin_menu', array($this, 'register_options_page'));
-		// add_action('admin_enqueue_scripts', array($this, 'scripts'));
+		add_action('wp_enqueue_scripts', array($this, 'scripts'),11,1);
+		add_action('parse_request', array($this , 'router'));
 
 	}
 
@@ -50,10 +50,37 @@ class WP_Flexible_Layout_Editor {
 	 */
 
 	public function scripts() {
+
+		// Guard administrators
+		if( !current_user_can('editor') && !current_user_can('administrator') ) return;
 		
-		// wp_enqueue_script('modernizr', 'https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js',null,$this->version);
-		// wp_enqueue_style('wp_split_screen', $this->dir .'assets/split-screen.css',null,$this->version);
-		// wp_enqueue_script('wp_split_screen', $this->dir.'assets/split-screen.js', null, $this->version);
+		// Include Dependencies
+		wp_enqueue_script('vue', 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js',null,$this->version);
+		wp_enqueue_style('wp_flexible_layout_editor', $this->dir .'assets/editor.css',null,$this->version);
+		wp_enqueue_script('wp_flexible_layout_editor', $this->dir.'assets/editor.js', null, $this->version);
+
+	}
+
+	/**
+	 * Router
+	 * @param OBJ $wp 
+	 * @return null
+	 */
+	
+	public function router($wp) {
+
+		$pagename = (isset($wp->query_vars['pagename'])) ? $wp->query_vars['pagename'] : $wp->request;
+
+		switch ($pagename) {
+
+			case 'api/editor/save':
+				$this->save($_POST);
+				break;
+
+			default:
+				break;
+
+		}
 
 	}
 
