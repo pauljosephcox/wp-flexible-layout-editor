@@ -39,10 +39,16 @@ class WP_Flexible_Layout_Editor {
 		// Actions
 		add_action('wp_enqueue_scripts', array($this, 'scripts'),11,1);
 		add_action('parse_request', array($this , 'router'));
+		add_action('wp_footer', array($this,'render'));
 
 	}
 
+	public function is_admin(){
 
+		if( !current_user_can('editor') && !current_user_can('administrator') ) return false;
+		return true;
+
+	}
 
 	/**
 	 * Include Styles and Functionality
@@ -52,12 +58,12 @@ class WP_Flexible_Layout_Editor {
 	public function scripts() {
 
 		// Guard administrators
-		if( !current_user_can('editor') && !current_user_can('administrator') ) return;
+		if( !$this->is_admin() ) return;
 		
 		// Include Dependencies
-		wp_enqueue_script('vue', 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js',null,$this->version);
+		wp_enqueue_script('vue', '//cdnjs.cloudflare.com/ajax/libs/vue/2.1.6/vue.min.js',null,$this->version,true);
 		wp_enqueue_style('wp_flexible_layout_editor', $this->dir .'assets/editor.css',null,$this->version);
-		wp_enqueue_script('wp_flexible_layout_editor', $this->dir.'assets/editor.js', null, $this->version);
+		wp_enqueue_script('wp_flexible_layout_editor', $this->dir.'assets/editor.js', null, $this->version,true);
 
 	}
 
@@ -66,7 +72,7 @@ class WP_Flexible_Layout_Editor {
 	 * @param OBJ $wp 
 	 * @return null
 	 */
-	
+
 	public function router($wp) {
 
 		$pagename = (isset($wp->query_vars['pagename'])) ? $wp->query_vars['pagename'] : $wp->request;
@@ -81,6 +87,14 @@ class WP_Flexible_Layout_Editor {
 				break;
 
 		}
+
+	}
+
+	public function render(){
+
+		if( !$this->is_admin() ) return;
+
+		include($this->path . 'templates/editor.php');
 
 	}
 

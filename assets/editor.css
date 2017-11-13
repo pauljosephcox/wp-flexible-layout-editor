@@ -1,3 +1,69 @@
 /**
- * Styles
+ * Styles OMG give be sass
  */
+
+
+/*
+// ------------------------------------
+// Content
+// ------------------------------------
+*/
+[data-editable] {
+
+	transition: all 200ms;
+	transform: translateY(0);
+	cursor: pointer;
+
+}
+[data-editable]:hover {
+
+	transform: translateY(-5px);
+
+}
+
+
+
+/*
+// ------------------------------------
+// The Editor
+// ------------------------------------
+*/
+
+.wp-flexible-layout-editor {
+
+	background-color: black;
+	color: white;
+
+}
+
+.wp-flexible-layout-editor .panel {
+
+	position: fixed;
+	transform: translateX(-25vw);
+	left: 0;
+	top: 0;
+	height: 100vh;
+	width: 25vw;
+	z-index: 99999;
+	background-color: blue;
+	padding: 2em;
+	transition: all 200ms;
+
+}
+.wp-flexible-layout-editor.editor .panel { transform: translateX(0vw); }
+
+.wp-flexible-layout-editor .panel textarea {
+
+	width: 100%;
+	min-height: 300px;
+
+}
+
+.wp-flexible-layout-editor .editmode {
+
+	position: fixed;
+	bottom: 1em;
+	left: 1em;
+	z-index: 100000;
+
+}
