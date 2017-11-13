@@ -1,10 +1,10 @@
 // ------------------------------------
 // Vue
 // ------------------------------------
-new Vue({
+var APP = new Vue({
 	el: "#editor",
 	mounted: function(){
-		
+		this.postid = this.$refs.postid.value;
 	},
 	data() {
 		return {
@@ -12,7 +12,9 @@ new Vue({
 			title: "My Editor Title",
 			currentEditValue: null,
 			currentTarget: null,
+			postid: null,
 			acf: {},
+			saveButtonTitle: "Save",
 			edit: {
 
 				buttonTitle: 'Edit',
@@ -61,16 +63,44 @@ new Vue({
 
 			this.edit.buttonTitle = 'Edit';
 			this.state = 'normal';
-			this.save();
+			this.preview();
 			// jQuery('[data-editable]').attr('contenteditable',false);
 
 		},
 
-		save: function(){
-			// console.log("SAVE");
-			// console.log(this.acf);
-			// console.log(this.currentTarget.getAttribute('data-editable'));
+		preview: function(){
 			this.currentTarget.innerText = this.currentEditValue;
+			this.acf[this.currentTarget.getAttribute('data-editable')] = this.currentEditValue;
+		},
+
+		save: function(){
+
+			// TODO: Send to Wordpress API
+			console.log(this.postid);
+			console.log(this.acf);
+
+			var d = {
+				postid: this.postid,
+				acf: this.acf
+			}
+
+			this.saveButtonTitle = "Processing...";
+
+			jQuery.ajax({
+                url:  '/api/editor/save',
+                method: 'POST',
+                data: d,
+                success: function (data) {
+                    console.log("Data");
+                    console.log(data);
+                    APP.saveButtonTitle = "Save";
+                   
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            });
+
 
 		}
 

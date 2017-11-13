@@ -51,6 +51,9 @@
 
 }
 .wp-flexible-layout-editor.editor .panel { transform: translateX(0vw); }
+.wp-flexible-layout-editor .preview { display: none; }
+.wp-flexible-layout-editor.editor .save { display: none; }
+.wp-flexible-layout-editor.editor .preview { display: block; }
 
 .wp-flexible-layout-editor .panel textarea {
 

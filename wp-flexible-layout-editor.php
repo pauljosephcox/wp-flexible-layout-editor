@@ -98,6 +98,23 @@ class WP_Flexible_Layout_Editor {
 
 	}
 
+	public function save($vars){
+
+		if(!$this->is_admin()) return;
+
+		foreach($vars['acf'] as $key=>$value){
+
+			// TODO: Make work with rows
+			if(!strstr($key, 'row')) update_post_meta($vars['postid'],$key,$value);
+
+		}
+		
+		echo json_encode(array('success'=>true));
+		die;
+
+
+	}
+
 
 }
 
